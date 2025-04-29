@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.4-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,12 +32,8 @@ RUN chown -R www-data:www-data /var/www/html && \
 # Install dependencies
 RUN composer install --no-interaction --optimize-autoloader
 
-# Configure Apache
-RUN a2enmod rewrite
-COPY docker/apache2.conf /etc/apache2/apache2.conf
+# Expose port 8080
+EXPOSE 8080
 
-# Expose port 80
-EXPOSE 80
-
-# Start Apache
-CMD ["apache2-foreground"] 
+# Start PHP built-in server
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "web"] 
