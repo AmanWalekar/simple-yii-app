@@ -19,17 +19,21 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Install fxp/composer-asset-plugin globally
+RUN composer global require "fxp/composer-asset-plugin:^1.4.7"
+
 # Set working directory
 WORKDIR /var/www/html
 
 # Copy existing application directory
 COPY . .
 
-# Install dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+# Fix ownership and permissions
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
-# Change ownership of our applications
-RUN chown -R www-data:www-data /var/www/html
+# Install dependencies
+RUN composer install --no-interaction --optimize-autoloader
 
 # Configure Apache
 RUN a2enmod rewrite
