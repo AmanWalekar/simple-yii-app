@@ -19,9 +19,6 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install fxp/composer-asset-plugin globally
-RUN composer global require "fxp/composer-asset-plugin:^1.4.7"
-
 # Set working directory
 WORKDIR /var/www/html
 
