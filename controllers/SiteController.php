@@ -50,7 +50,16 @@ class SiteController extends Controller
     {
         $exception = Yii::$app->errorHandler->exception;
         if ($exception !== null) {
-            return $this->render('error', ['exception' => $exception]);
+            return $this->render('error', [
+                'name' => $exception->getName(),
+                'message' => $exception->getMessage(),
+                'exception' => $exception
+            ]);
         }
+        return $this->render('error', [
+            'name' => 'Error',
+            'message' => 'An error occurred while processing your request.',
+            'exception' => null
+        ]);
     }
 } 

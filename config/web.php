@@ -4,7 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'blog',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -21,7 +21,6 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['/backend/site/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -44,19 +43,20 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'backend/post/<id:\d+>' => 'backend/post/view',
-                'backend/post/<action:\w+>' => 'backend/post/<action>',
-                'post/<id:\d+>' => 'frontend/post/view',
-                'post/<action:\w+>' => 'frontend/post/<action>',
+                'post/<id:\d+>' => 'post/view',
+                'post/<id:\d+>/<slug>' => 'post/view',
+                'category/<id:\d+>' => 'category/view',
+                'tag/<id:\d+>' => 'tag/view',
+                'page/<slug>' => 'page/view',
+                'search' => 'site/search',
+                'about' => 'site/about',
+                'contact' => 'site/contact',
+                'login' => 'site/login',
+                'logout' => 'site/logout',
+                'signup' => 'site/signup',
+                'request-password-reset' => 'site/request-password-reset',
+                'reset-password' => 'site/reset-password',
             ],
-        ],
-    ],
-    'modules' => [
-        'backend' => [
-            'class' => 'app\modules\backend\Module',
-        ],
-        'frontend' => [
-            'class' => 'app\modules\frontend\Module',
         ],
     ],
     'params' => $params,
@@ -66,11 +66,13 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 
